@@ -1,38 +1,38 @@
 name: Build Glass TV APK
 
 on:
-  workflow_dispatch:
-  push:
-    paths:
-      - 'launcher/**'
-      - '.github/workflows/build.yml'
+workflow_dispatch:
+push:
+paths:
+- 'launcher/**'
+- '.github/workflows/build.yml'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+build:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Get source code
-        uses: actions/checkout@v4
+steps:
+  - name: Checkout source
+    uses: actions/checkout@v4
 
-      - name: Install Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
+  - name: Set up Java
+    uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: '17'
 
-      - name: Install Android SDK
-        uses: android-actions/setup-android@v3
+  - name: Set up Android SDK
+    uses: android-actions/setup-android@v3
 
-      - name: Build APK
-        run: |
-          chmod +x launcher/gradlew
-          cd launcher
-          ./gradlew assembleDebug
+  - name: Build APK
+    run: |
+      chmod +x launcher/gradlew
+      cd launcher
+      ./gradlew assembleDebug
 
-      - name: Save APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: glass-tv-apk
-          path: launcher/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+  - name: Upload APK
+    uses: actions/upload-artifact@v4
+    with:
+      name: glass-tv-apk
+      path: launcher/app/build/outputs/apk/debug/*.apk
+      if-no-files-found: error
